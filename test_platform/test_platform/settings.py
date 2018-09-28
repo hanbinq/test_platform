@@ -115,7 +115,11 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images),设置本地静态文件
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_FILES_DIRS = [
+    os.path.join(BASE_DIR, "static/")
+]
