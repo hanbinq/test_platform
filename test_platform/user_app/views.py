@@ -20,7 +20,7 @@ def login_action(request):
             return render(request, "index.html",
                           {"error": "用户名或者密码为空"})
         elif user is not None:
-            auth.login(request, user)  # 登录验证
+            auth.login(request, user)  # 记录用户的登录状态
             request.session['user'] = username  # 将session信息记录到浏览器
             return HttpResponseRedirect('/project_manage/')
         else:
@@ -30,7 +30,11 @@ def login_action(request):
 
 @login_required
 def project_manage(request):
-    return render(request, "project_manage.html")
+    username = request.session.get('user', '')   # 读取浏览器session
+    return render(request, "project_manage.html", {"user": username})
 
 
-
+def logout(request):
+    auth.logout(request)   # 调用自带的方法，清除用户登录状态
+    reponse = HttpResponseRedirect('/')
+    return reponse
