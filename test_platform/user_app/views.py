@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from .models import Project, Module
 
 
 # 主要代码逻辑
@@ -31,10 +32,13 @@ def login_action(request):
 @login_required
 def project_manage(request):
     username = request.session.get('user', '')   # 读取浏览器session
-    return render(request, "project_manage.html", {"user": username})
+    project_all = Project.objects.all()
+
+    return render(request, "project_manage.html", {"user": username,
+                                                   "projects": project_all})
 
 
 def logout(request):
     auth.logout(request)   # 调用自带的方法，清除用户登录状态
-    reponse = HttpResponseRedirect('/')
-    return reponse
+    response = HttpResponseRedirect('/')
+    return response
