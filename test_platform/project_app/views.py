@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Project
+from .forms import ProjectForm
 
 
 @login_required
@@ -13,6 +15,54 @@ def project_manage(request):
     username = request.session.get('user', '')   # 读取浏览器session
     project_all = Project.objects.all()
     return render(request, "project_manage.html", {"user": username,
-                                                   "projects": project_all})
+                                                   "projects": project_all,
+                                                   "type": "list"})
+
+
+@login_required
+def add_project(request):
+    """
+    添加项目
+    :param request:
+    :return:
+    """
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        # 判断表单是否有效
+        if form.is_valid():
+            # 已验证的表单数据将被放到form.cleaned_data字典中，这里的数据已经很好的转化为python类型。
+            name = form.cleaned_data['name']
+            describe = form.cleaned_data['describe']
+            status = form.cleaned_data['status']
+            Project.objects.create(name=name, describe=describe, status=status)
+            return HttpResponseRedirect('/manage/project_manage/')
+    else:
+        form = ProjectForm()
+
+    return render(request, 'project_manage.html', {
+        'form': form,
+        "type": "add",
+    })
+
+
+@login_required
+def edit_project(request, pid):
+    """
+    编辑/修改项目
+    :param request:
+    :param pid:
+    :return:
+    """
+    if request.method == "POST":
+        pass
+    else:
+        form = ProjectForm()
+
+    return render(request, 'project_manage.html', {
+        'form': form,
+        "type": "edit",
+    })
+
+
 
 
