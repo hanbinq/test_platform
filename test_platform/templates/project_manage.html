@@ -70,7 +70,7 @@
                                 <td>{{project.name}}</td>
                                 <td>{{project.describe}}</td>
                                 <td>{{project.status}}</td>
-                                <td>{{project.create_time}}</td>
+                                <td>{{project.create_time|date:"Y-m-d H:i:s"}}</td>
                                 <td>
                                     <a href="/manage/edit_project/{{project.id}}/">编辑</a>
                                     <a href="/manage/delete_project/{{project.id}}/">删除</a>
