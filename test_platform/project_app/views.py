@@ -13,7 +13,7 @@ def project_manage(request):
     :return:
     """
     username = request.session.get('user', '')   # 读取浏览器session
-    project_all = Project.objects.all()
+    project_all = Project.objects.order_by("-create_time")   # 按照创建时间倒序排列
     return render(request, "project_manage.html", {"user": username,
                                                    "projects": project_all,
                                                    "type": "list"})
@@ -54,15 +54,40 @@ def edit_project(request, pid):
     :return:
     """
     if request.method == "POST":
-        pass
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            model = Project.objects.get(id=pid)
+            model.name = form.cleaned_data['name']
+            model.describe = form.cleaned_data['describe']
+            model.status = form.cleaned_data['status']
+            model.save()
+            return HttpResponseRedirect('/manage/project_manage/')
+
     else:
-        form = ProjectForm()
+        if pid:
+            # instance属性，表示与它绑定的模型实例
+            form = ProjectForm(
+                instance=Project.objects.get(id=pid)  # 赋值instance可以使form表单是可以接受对象的数据
+            )
+        else:
+            form = ProjectForm()
 
     return render(request, 'project_manage.html', {
         'form': form,
         "type": "edit",
     })
 
+
+@login_required
+def delete_project(request, pid):
+    """
+    删除项目
+    :param request:
+    :param pid:
+    :return:
+    """
+    Project.objects.get(id=pid).delete()
+    return HttpResponseRedirect("/manage/project_manage/")
 
 
 
