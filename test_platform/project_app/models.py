@@ -26,6 +26,9 @@ class Module(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['-create_time']   # 配置项目列表按照创建时间倒序排列
+
 
 
 

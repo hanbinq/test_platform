@@ -13,7 +13,8 @@ def project_manage(request):
     :return:
     """
     username = request.session.get('user', '')   # 读取浏览器session
-    project_all = Project.objects.order_by("-create_time")   # 按照创建时间倒序排列
+    # project_all = Project.objects.order_by("-create_time")   # 按照创建时间倒序排列
+    project_all = Project.objects.all()
     return render(request, "project_manage.html", {"user": username,
                                                    "projects": project_all,
                                                    "type": "list"})
