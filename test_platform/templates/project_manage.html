@@ -29,8 +29,8 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li class="active"><a href="#">项目管理</a></li>
-                    <li><a href="#">模块管理</a></li>
+                    <li class="active"><a href="/manage/project_manage/">项目管理</a></li>
+                    <li><a href="/manage/module_manage/">模块管理</a></li>
                     <li><a href="">用例管理</a></li>
                     <li><a href="">任务管理</a></li>
                     <li><a href="">mockserver</a></li>
@@ -87,14 +87,21 @@
 
     {% if type == 'add'%}
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h3 class="sub-header">添加项目</h3>
-
-        <div class="table-responsive">
-            <form action="/manage/add_project/" method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-success">创建</button>
-            </form>
+        <h3 class="sub-header">添加项目
+            <button class="btn btn-default" onclick="window.location.href='/manage/project_manage/'" style="margin-left:
+             180px;">取消
+            </button>
+        </h3>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="table-responsive">
+                    <form action="/manage/add_project/" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success">创建</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     {% endif %}
