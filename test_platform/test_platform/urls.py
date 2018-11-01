@@ -27,5 +27,5 @@ urlpatterns = [
 
     path('manage/', include('project_app.urls')),
 
-
+    path('interface/', include('interface_app.urls')),
 ]
