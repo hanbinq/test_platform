@@ -4,7 +4,7 @@ from .models import TestCase
 
 class TestCaseAdmin(admin.ModelAdmin):
     list_display = ['module', 'name', 'url', 'req_method',
-                    'req_type', 'req_header', 'req_parameter', 'responses_assert']
+                    'req_type', 'req_header', 'req_parameter', 'resp_assert']
 
 
 admin.site.register(TestCase, TestCaseAdmin)
