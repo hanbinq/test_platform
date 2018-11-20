@@ -14,10 +14,18 @@ var CaseInit = function (case_id) {
                 document.getElementById("req_url").value = result.url;
                 document.getElementById("req_header").value = result.req_header;
                 document.getElementById("req_parameter").value = result.req_parameter;
+                document.getElementById("assert_text").value = result.assertText;
 
-                if (result.req_method == "post"){
-                    document.getElementById("post").setAttribute("checked", "")
+                if (result.req_method === "post"){
+                    document.getElementById("post").setAttribute("checked", "");
                 }
+
+                if (result.req_type === "json"){
+                    document.getElementById("json").setAttribute("checked", "");
+                }
+
+                // 初始化菜单 -->待完善
+                //ProjectInit('project_name', 'module_name', result.proj)
             }else {
                 window.alert("用例id不存在");
             }
@@ -26,8 +34,6 @@ var CaseInit = function (case_id) {
     }
     //调用getCaseInfo函数
     getCaseInfo();
-
-
 }
 
 
