@@ -35,7 +35,6 @@
                 <li><a href="/interface/case_manage/">用例管理</a></li>
                 <li><a href="/manage/test_task/">任务管理</a></li>
 
-
                 <li><a href="">MockServer</a></li>
                 <li><a href="">测试工具</a></li>
             </ul>
@@ -110,13 +109,13 @@
                                 {{ form.describe }}
                             </div>
                         </div>
-                         {% csrf_token %}
+
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-primary">提交</button>
                             </div>
                         </div>
-
+                        {% csrf_token %}
                     </form>
                 </div>
             </div>
@@ -153,23 +152,20 @@
                                 {{ form.describe }}
                             </div>
                         </div>
-                         {% csrf_token %}
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <!-- <button class="btn btn-default" onclick="window.location.href='/manage/module/'">取消</button> -->
                                 <button type="submit" class="btn btn-primary">更新</button>
                             </div>
                         </div>
+                        {% csrf_token %}
                     </form>
                 </div>
             </div>
         </div>
         {% endif %}
 
-
     </div>
-
-
 </div>
 
 {% endblock %}
