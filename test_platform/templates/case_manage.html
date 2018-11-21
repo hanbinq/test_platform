@@ -44,31 +44,40 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h3 class="sub-header">用例列表
                 <button type="button" class="btn btn-success" style="float: right;" 
-                onclick="window.location.href='/interface/debug/'">调试</button>
+                onclick="window.location.href='/interface/add_case/'">创建</button>
             </h3>
             <div class="table-responsive">
+
+                <form class="navbar-form" method="get" action="/interface/search_case_name/">
+                    <div class="form-group">
+                        <input name="case_name" type="text" placeholder="用例名称" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-success">搜索</button>
+                </form>
+
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>id</th>
                             <th>名称</th>
-                            <th>描述</th>
-                            <th>状态</th>
+                            <th>URL</th>
+                            <th>方法</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for project in projects %}
+                        {% for case in testcases %}
                         <tr>
-                            <td>{{ project.id }}</td>
-                            <td>{{ project.name }}</td>
-                            <td>{{ project.describe }}</td>
-                            <td>{{ project.status }}</td>
-                            <td>{{ project.create_time | date:"Y-m-d H:i:s" }}</td>
+                            <td>{{ case.id }}</td>
+                            <td>{{ case.name }}</td>
+                            <td>{{ case.url }}</td>
+                            <td>{{ case.req_method }}</td>
+                            <td>{{ case.create_time | date:"Y-m-d H:i:s" }}</td>
                             <td>
-                                <a href="/manage/edit_project/{{project.id}}/">编辑</a>
-                                <a href="/manage/delete_project/{{project.id}}/">删除</a>
+                                <a href="/interface/debug_case/{{case.id}}/">编辑</a>
+                                <!-- 待完善 -->
+                                <a href="/manage/delete_case/{{case.id}}/">删除</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -99,7 +108,6 @@
             </div>
 
         </div>
-
         {% endif %}
 
         <!-- 添加(调试)页面 -->
@@ -110,13 +118,21 @@
                     <!--add_case.html-->
                 {% endblock %}
             </div>
+        </div>
+        {% endif %}
 
+        <!-- 添加（调试）用例页面 待学习-->
+        {% if type == 'debug'%}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                {% block debug_case %}
+                    <!--debug_case.html-->
+                {% endblock %}
+            </div>
         </div>
         {% endif %}
 
     </div>
-
-
 </div>
 
 {% endblock %}
