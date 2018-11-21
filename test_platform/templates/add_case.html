@@ -1,5 +1,5 @@
 {% extends "case_manage.html" %}
-{% block api_debug %}
+{% block add_case %}
 
 
     <fieldset>
@@ -69,6 +69,17 @@
                 <input id="req_parameter" type="text" class="form-control">
             </div>
             <p style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
+
+            <p>验证数据：</p>
+            <div style="height: 100px">
+                <div style="float: left; width: 90%;">
+                    <textarea id="assert_text" class="form-control" rows="3" name=textarea></textarea>
+                </div>
+                <div style="margin-top: 38px; float: right; width: 10%;">
+                    <button type="button" class="btn btn-default" id="assert" style="float: right;margin-right: 10px;">验证</button>
+                </div>
+            </div>
+
             <div style="width: 100%; height: 60px;">
                 <button type="button" class="btn btn-success" id="send" style="float: right;margin-right: 10px;">调试</button>
                 <button type="button" class="btn btn-success" id="save" style="float: right;margin-right: 10px;">保存</button>
@@ -87,17 +98,23 @@
 
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
-        //初始化菜单
+
+        //初始化项目模块选择框
         ProjectInit('project_name', 'module_name');
 
+        //设置header 与 参数输入框默认值
+        document.querySelector("#req_header").value="{}";
+        document.querySelector("#req_parameter").value="{}";
+
         $(document).ready(function () {
+
             $("#send").click(function () {
                let url = $("#req_url").val();
                let method = $('input[name="req_method"]:checked').val();
                let parameter = $("#req_parameter").val();
                //自己完善
                let type = $('input[name="req_type"]:checked').val();
-               let header = $("#req_header").val();
+               //let header = $("#req_header").val();
 
                if(url === ""){
                    window.alert("请求的URL不能为空");
@@ -106,28 +123,35 @@
                }else if (parameter === ""){
                    parameter = "{}";
                }
-               // 发送一个post请求
+               // 发送一个post请求，调式接口
                $.post("/interface/api_debug/", {
                    "req_url": url,
                    "req_method": method,
                    "req_parameter": parameter,
                    "req_type": type,
-                   "req_header": header
+                   //"req_header": header
                 }, function (resp) {
-                    $("#result").html(resp);
+                   if (resp.success === "true"){
+                       $("#result").html(resp);
+                   }else {
+                       window.alert(resp.message);
+                   }
                 });
             });
+
+            //保存为接口测试用例
             $("#save").click(function () {
+                let module_name = $('select[id="module_name"]').val();
                 let name = $("#req_name").val();
                 let url = $("#req_url").val();
                 let method = $('input[name="req_method"]:checked').val();
                 let parameter = $("#req_parameter").val();
                 let req_type = $('input[name="req_type"]:checked').val();
                 let header = $("#req_header").val();
-                let module_id = $('select[name="module"]').val();
-                console.log("类型", req_type);
-                console.log("头部", header);
-                console.log("模块", module_id);
+                let assert_text = $("#assert_text").val();
+                //console.log("类型", req_type);
+                //console.log("头部", header);
+                //console.log("模块", module_name);
                 //window.alert("hello jQ");
                 if (name === "") {
                     window.alert("名称不能为空");
@@ -138,7 +162,7 @@
                 } else if (parameter === "") {
                     parameter = "{}";
                 }
-                // 发送一个post请求
+                // 发送一个post请求,保存用例接口
                 $.post("/interface/save_case/", {
                     "name": name,
                     "req_url": url,
@@ -146,14 +170,36 @@
                     "req_parameter": parameter,
                     "req_type": req_type,
                     "header": header,
-                    "module": module_id,
+                    "module": module_name,
+                    "assert_text": assert_text,
                 }, function (resp) {
-                    //console.log("6666", resp);
-                    $("#result").html(resp);
+                    if (resp.success === "true"){
+                        window.alert(resp.message);
+                        //$("#result").html(resp);
+                    } else {
+                        window.alert(resp.message);
+                    }
+                    //$("#result").html(resp);
                 });
             });
+
+            //验证数据
+            $("#assert").click(function () {
+                let result = $("#result").val();
+                let assert = $("#assert_text").val();
+
+                if (result === "" || assert === ""){
+                    window.alert("验证数据不能为空！");
+                }
+                $.post("/interface/api_assert/",{
+                    "result": result,
+                    "assert": assert,
+                }, function (resp) {
+                    window.alert(resp.message);
+                });
+            });
+
         });
     </script>
-
 
 {% endblock %}
