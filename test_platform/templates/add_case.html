@@ -1,10 +1,9 @@
 {% extends "case_manage.html" %}
 {% block add_case %}
 
-
     <fieldset>
         <div id="legend" class="">
-            <legend class="">在线postman</legend>
+            <legend class="">创建接口用例</legend>
         </div>
 
         <div style="width:80%; margin-left: 20px;">
@@ -40,7 +39,7 @@
                     <input type="radio" name="req_method" id="post" value="post"> POST
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="req_method" id="pub" value="put"> PUT
+                    <input type="radio" name="req_method" id="put" value="put"> PUT
                 </label>
                 <label class="radio-inline">
                     <input type="radio" name="req_method" id="delete" value="delete"> DELETE
@@ -114,7 +113,7 @@
                let parameter = $("#req_parameter").val();
                //自己完善
                let type = $('input[name="req_type"]:checked').val();
-               //let header = $("#req_header").val();
+               let header = $("#req_header").val();
 
                if(url === ""){
                    window.alert("请求的URL不能为空");
@@ -129,10 +128,10 @@
                    "req_method": method,
                    "req_parameter": parameter,
                    "req_type": type,
-                   //"req_header": header
+                   "req_header": header
                 }, function (resp) {
                    if (resp.success === "true"){
-                       $("#result").html(resp);
+                       $("#result").html(resp.data);
                    }else {
                        window.alert(resp.message);
                    }
@@ -152,15 +151,19 @@
                 //console.log("类型", req_type);
                 //console.log("头部", header);
                 //console.log("模块", module_name);
-                //window.alert("hello jQ");
+
                 if (name === "") {
                     window.alert("名称不能为空");
+                    return;
                 }else if (url === "") {
                     window.alert("请求的URL不能为空");
+                    return;
                 } else if (method === "") {
                     window.alert("请求的方法不能为空");
+                    return;
                 } else if (parameter === "") {
                     parameter = "{}";
+                    //return;  待验证
                 }
                 // 发送一个post请求,保存用例接口
                 $.post("/interface/save_case/", {

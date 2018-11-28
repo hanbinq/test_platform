@@ -12,11 +12,12 @@ urlpatterns = [
     path("debug_case/<int:cid>/", testcase_views.debug_case),
 
     # 用例管理  --> 由JS调用的接口
-    path('get_project_list/', testcase_views.get_project_list),
-    path('api_debug/', testcase_views.api_debug),
+    path('get_project_list/', testcase_api.get_project_list),
+    path('api_debug/', testcase_api.api_debug),
     path("api_assert/", testcase_api.api_assert),   # 待完善
-    path('save_case/', testcase_views.save_case),
-    path("get_case_info/", testcase_views.get_project_list),
+    path('save_case/', testcase_api.save_case),
+    path('update_case/', testcase_api.update_case),
+    path("get_case_info/", testcase_api.get_project_list),
 ]
 
 

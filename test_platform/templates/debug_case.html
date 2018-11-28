@@ -102,22 +102,26 @@
         // 调试接口， --->待完善
         $("#send").click(function () {
             //let name = $("#req_name").val();
-            let req_url = $("#req_url").val();
-            let req_method = $('input[name="req_method"]:checked').val();
+            let url = $("#req_url").val();
+            let method = $('input[name="req_method"]:checked').val();
             let type = $('input[name="req_type"]:checked').val();
+            let header = $("#req_header").val();
             let parameter = $("#req_parameter").val();
 
-            if (req_url === "") {
+            if (url === "") {
                 window.alert("URL不能为空!");
-            }else if (req_method === ""){
+                return;
+            }else if (method === ""){
                 window.alert("请求的方法不能为空");
+                return;
             }else if (parameter === "") {
                 parameter = "{}";
             }
-            $.post("/interface/debug/", {
-                'req_url': req_url,
-                'req_method': req_method,
+            $.post("/interface/api_debug/", {
+                'req_url': url,
+                'req_method': method,
                 'req_type': type,
+                "req_header": header,
                 'req_parameter': parameter
             }, function (resp) {
                 if (resp.success === "true"){
@@ -130,23 +134,21 @@
 
         // 更新接口
         $("#update").click(function () {
-            let module_name = $('select[name="module_name"]').val();
+            let module_name = $('select[id="module_name"]').val();
             let name = $("#req_name").val();
-            let req_url = $("#req_url").val();
-            let req_method = $('input[name="req_method"]:checked').val();
+            let url = $("#req_url").val();
+            let method = $('input[name="req_method"]:checked').val();
             let parameter = $("#req_parameter").val();
             let req_type = $('input[name="req_type"]:checked').val();
             let header = $("#req_header").val();
             let assert_text = $("#assert_text").val();
 
-            if (module_name === "") {
-                window.alert("请选择保存的项目和模块！");
-            }
-            else if (name === "") {
+
+            if (name === "") {
                 window.alert("请输入用例的名称！");
-            } else if (req_url === "") {
+            } else if (url === "") {
                 window.alert("URL不能为空!");
-            } else if (req_method === "") {
+            } else if (method === "") {
                 window.alert("请求的方法不能为空！");
             }else if (parameter === "") {
                 parameter = "{}";
@@ -157,8 +159,8 @@
                 'module': module_name,
                 'cid': case_id,
                 'name': name,
-                'req_url': req_url,
-                'req_method': req_method,
+                'req_url': url,
+                'req_method': method,
                 'req_parameter': parameter,
                 'req_type': req_type,
                 'header': header,
@@ -176,6 +178,7 @@
          $("#assert").click(function () {
             let result = $("#result").val();
             let assert = $("#assert_text").val();
+
             if (result === "" || assert === "") {
                 window.alert("验证数据不能为空！");
             }
