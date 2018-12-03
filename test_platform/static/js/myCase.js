@@ -7,13 +7,14 @@ var CaseInit = function (case_id) {
         $.post("/interface/get_case_info/", {
             "caseId": case_id,
         }, function (resp) {
-            if (resp.success == "true"){
+            if (resp.success === "true"){
+                console.log("状态", resp.success);
                 let result = resp.data;
-                //console.log("结果", result);
+                console.log("结果", result);
                 document.getElementById("req_name").value = result.name;
                 document.getElementById("req_url").value = result.url;
-                document.getElementById("req_header").value = result.req_header;
-                document.getElementById("req_parameter").value = result.req_parameter;
+                document.getElementById("req_header").value = result.reqHeader;
+                document.getElementById("req_parameter").value = result.reqParameter;
                 document.getElementById("assert_text").value = result.assertText;
 
                 if (result.req_method === "post"){
@@ -25,8 +26,9 @@ var CaseInit = function (case_id) {
                 }
 
                 // 初始化菜单 -->待完善
-                //ProjectInit('project_name', 'module_name', result.proj)
+                ProjectInit('project_name', 'module_name', result.projectName, result.moduleName)
             }else {
+                //console.log("状态", resp.success);
                 window.alert("用例id不存在");
             }
 

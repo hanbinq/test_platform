@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # 用例列表
 def case_manage(request):
-    testcases = TestCase.objects.all()
+    testcases = TestCase.objects.all().order_by("id")   # 一定要排序，主要是因为取的数据是无序的，Paginator分页会出错
     paginator = Paginator(testcases, 2)
 
     page = request.GET.get('page')
