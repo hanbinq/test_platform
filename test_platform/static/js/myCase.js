@@ -39,4 +39,34 @@ var CaseInit = function (case_id) {
 }
 
 
+// 获取用例列表
+let CaseListInit = function () {
+
+    let options = ""
+    function getCaseListInfo() {
+        //获取某个用例的信息
+        $.get("/interface/get_case_list", {}, function (resp) {
+            if (resp.success === "true"){
+                console.log(resp.data);
+                let cases = resp.data;
+                for (let i = 0; i < cases.length; i++){
+                    let option = '<input type="checkbox" name="' + cases[i].name
+                        + '" value="' + cases[i].id + '" /> ' + cases[i].name + '<br>'
+
+                    options = options + option;
+                }
+                let devCaseList = document.querySelector(".caseList");
+                devCaseList.innerHTML = options;
+
+            }else {
+                window.alert(resp.message);
+            }
+            }
+        );
+    }
+    // 调用getCaseListInfo函数
+    getCaseListInfo();
+}
+
+
 
